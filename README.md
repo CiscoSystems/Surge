@@ -11,7 +11,7 @@ The currently supported sytems are:
 
 ## Requirements
 
- * Ansible
+ * Pip
  * Vagrant
  * vagrant-openstack-provider
  * VirtualBox
@@ -20,7 +20,11 @@ The currently supported sytems are:
 
 Install from this repository:
 
-    $ pip install git+https://github.com/CiscoSystems/surge.git
+    $ pip install virtualenv
+    $ virtualenv env
+    $ source env/bin/activate
+    $ git clone https://github.com/CiscoSystems/Surge.git
+    $ pip install -e Surge/
 
 ## Usage
 

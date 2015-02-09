@@ -3,7 +3,7 @@ Surge command line client
 """
 from setuptools import find_packages, setup
 
-dependencies = ['click', 'python-vagrant']
+dependencies = ['click', 'python-vagrant', 'ansible']
 
 setup(
     name='surge',
