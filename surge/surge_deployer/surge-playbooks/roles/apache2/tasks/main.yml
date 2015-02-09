@@ -1,0 +1,14 @@
+---
+# file: roles/apache2/tasks/main.yml
+
+- name: install apache2 via apt
+  apt: pkg={{ item }}
+  with_items:
+     - apache2
+  tags: apache
+
+- name: configure apache2 so it doesn't complain 'can't determine fqdn'
+  lineinfile: dest=/etc/apache2/apache2.conf regexp="{{ ansible_fqdn }}" line="ServerName {{ ansible_fqdn }}"
+  notify:
+    - reload apache config
+  tags: apache

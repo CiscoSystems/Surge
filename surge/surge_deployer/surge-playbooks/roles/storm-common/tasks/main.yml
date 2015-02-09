@@ -1,0 +1,36 @@
+- name: Stopping any previous installation of storm
+  supervisorctl: name=storm state=stopped
+
+- name: Installing dependencies
+  apt: pkg={{ item }}
+  with_items:
+    - unzip
+  sudo: yes
+
+- name: Creating the storm user group
+  action: group name=storm state=present
+
+- name: Creating the user directory
+  action: file path="/home/storm" state=directory
+
+- name: Creating the storm user
+  user: name=storm group=storm home="/home/storm" shell=/bin/bash state=present
+
+- name: Copying Storm
+  copy: src=apache-storm-0.9.3.zip dest=/tmp/apache-storm-0.9.3.zip
+
+- name: Extracting to /usr/local/etc
+  command: unzip /tmp/apache-storm-0.9.3.zip chdir=/usr/local/etc creates=/usr/local/etc/apache-storm-0.9.3.zip
+
+- name: Updating permissions
+  file: path=/usr/local/etc/apache-storm-0.9.3.zip owner=storm group=storm state=directory recurse=yes
+  sudo: yes
+
+- name: Creating link to folder
+  file: path=/usr/local/etc/storm src=/usr/local/etc/apache-storm-0.9.3 state=link force=yes
+
+- name: Creating the logs dir
+  file: path=/var/log/storm owner=storm group=storm mode=0750 state=directory
+
+- name: Updating the storm.yaml conf
+  template: src=storm.yaml.j2 dest=/usr/local/etc/storm/conf/storm.yaml owner=storm group=storm mode=0644

@@ -1,0 +1,17 @@
+- name: Creating supervisord's script
+  template: src=storm-nimbus.conf.j2 dest=/etc/supervisor/conf.d/storm-nimbus.conf owner=root group=root mode=0644
+
+- name: Ensuring supervisord finds it
+  supervisorctl: name=storm-nimbus state=present
+
+- name: Restarting Storm-nimbus
+  supervisorctl: name=storm-nimbus state=restarted
+
+- name: Creating supervisord's script
+  template: src=storm-ui.conf.j2 dest=/etc/supervisor/conf.d/storm-ui.conf owner=root group=root mode=0644
+
+- name: Ensuring supervisord finds it
+  supervisorctl: name=storm-ui state=present
+
+- name: Restarting Storm-ui
+  supervisorctl: name=storm-ui state=restarted

@@ -1,0 +1,9 @@
+kafka_version: 0.8.1.1
+kafka_user: kafka
+kafka_group: kafka
+kafka_uid: 51521
+kafka_gid: 51521
+kafka_logs_dir: /var/log/kafka
+kafka_port: 9092
+kafka_interface: eth1
+
