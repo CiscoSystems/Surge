@@ -13,13 +13,13 @@ The currently supported sytems are:
 
  * Pip
  * Vagrant
- * vagrant-openstack-provider
  * VirtualBox
 
 ## Installation
 
 Install from this repository:
 
+    $ vagrant plugin install vagrant-openstack-provider
     $ pip install virtualenv
     $ virtualenv env
     $ source env/bin/activate
@@ -43,6 +43,8 @@ You can use the file in the `example` folder as a base to configure your pipelin
 ### Deploy a pipeline to OpenStack
 
     $ surge deploy path/to/pipeline.yml -n PipelineName --openstack
+
+*Note: Some OpenStack environments, mostly Devstack ones, might be slow when booting machines. If the `deploy` operation times out, rerun it again and it will resume where it stopped.*
 
 ### See the status of a pipeline
 
