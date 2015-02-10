@@ -14,6 +14,7 @@ The currently supported sytems are:
  * Pip
  * Vagrant
  * VirtualBox
+ * Ubuntu: python-dev (apt)
 
 ## Installation
 
@@ -25,6 +26,9 @@ Install from this repository:
     $ source env/bin/activate
     $ git clone https://github.com/CiscoSystems/Surge.git
     $ pip install -e Surge/
+    $ surge deploy Surge/example/pipeline.yml -n KafkaPipeline
+    $ surge ssh KafkaPipeline [zookeeper1|kafka1|kafka2]
+    $ surge destroy KafkaPipeline
 
 ## Usage
 

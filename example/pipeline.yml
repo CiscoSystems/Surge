@@ -56,24 +56,22 @@ hosts:
     #     provider:
     #         virtualbox:
     #             memory: 1024
-    #             ip_start: 10.20.30.120
     #             forwarded_ports:
     #                 - guest: 8080
     #                   host: 28080
     #         openstack:
     #             flavor: m1.medium
-                # image: ubuntu
-                # floating_ip_pool: public
+    #             image: ubuntu
+    #             floating_ip_pool: public
 
     # storm-supervisor:
     #     count: 2
     #     provider:
     #         virtualbox:
     #             memory: 1024
-    #             ip_start: 10.20.30.125
     #         openstack:
     #             flavor: m1.medium
-                # image: ubuntu
-                # floating_ip_pool: public
+    #             image: ubuntu
+    #             floating_ip_pool: public
 
 
