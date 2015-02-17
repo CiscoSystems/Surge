@@ -56,7 +56,7 @@ You can use the file in the `example` folder as a base to configure your pipelin
 
 ### Ssh into a node
 
-    $ surge ssh nodeName
+    $ surge ssh PipelineName nodeName
 
 ### Destroy a pipeline
 
