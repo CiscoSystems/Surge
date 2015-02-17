@@ -1,6 +1,6 @@
 # Surge
 
-Surge is a tool working on top of Vagrant and using Ansible, aiming to let you easily deploy and scale data stream processing systems both locally or to an OpenStack Cluster.
+Surge is a system to rapidly deploy and scale a stream processing system on OpenStack. It leverages Vagrant and Ansible, and supports both OpenStack as well as the local mode (with VirtualBox).
 
 The currently supported sytems are:
 
