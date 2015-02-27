@@ -21,7 +21,7 @@ File.open('ansible_vagrant_inventory' ,'w') do |f|
     (1..opts['count']).each do |i|
       ip = IPAddr.new(ip).succ.to_s
       #Example: kafka1 ansible_ssh_host=10.20.30.81 broker_id=0
-      f.write "#{opts['hostname_prefix']}#{node}#{i} ansible_ssh_host=#{ip}\n"
+      f.write "#{opts['hostname_prefix']}#{node}#{i} ansible_ssh_host=#{ip} ansible_ssh_private_key_file=.vagrant/machines/#{opts['hostname_prefix']}#{node}#{i}/virtualbox/private_key virtualbox=true\n"
     end
     # if node.equal? $nodes.to_a.last[0]
     #   puts "Ansible hosts file created."
@@ -33,7 +33,7 @@ File.open('ansible_vagrant_inventory' ,'w') do |f|
   #f.write "\n[pipeline:children]\nkafka\nzookeeper\n\n[pipeline:vars]\nvagrant=true\n"
 end
     
-  #---------------------#
+#---------------------#
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
