@@ -55,7 +55,7 @@ storm.zookeeper.servers:
     - "{{ hostvars[host]['ansible_ssh_host'] }}"
 {% endfor %}
 
-nimbus.host: "{{ansible_ssh_host}}"
+nimbus.host: "{{hostvars[groups['storm-nimbus'][0]]['ansible_ssh_host']}}"
 
 nimbus.childopts: "-Xmx1024m -Djava.net.preferIPv4Stack=true"
 
