@@ -88,8 +88,11 @@ def create_template(ctx, filename, name):
 @click.pass_context
 def list_templates(ctx):
     """List all available templates"""
-    p = os.listdir(
-        os.path.dirname(os.path.realpath(__file__)) + '/surge_deployer/templates')
+    templates_dir = os.path.dirname(os.path.realpath(__file__)) + '/surge_deployer/templates'
+    if not os.path.exists(templates_dir):
+        click.echo("No templates available: %s does not exist" % templates_dir)
+        return
+    p = os.listdir(templates_dir)
     if len(p) is 0:
         click.echo("No templates available")
     else:
