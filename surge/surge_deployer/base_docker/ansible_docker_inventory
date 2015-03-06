@@ -1,0 +1,14 @@
+[zookeeper]
+localhost:8100
+
+[kafka]
+localhost:8120
+localhost:8140
+
+[storm-nimbus]
+localhost:8160
+
+[storm-supervisor]
+localhost:8180
+localhost:8200
+

@@ -10,6 +10,10 @@ provider:
             hostname_prefix: ""
             ip_start: 10.20.30.10
 
+        docker:
+            hostname_prefix: ""
+            start_port: 8100
+
         openstack:
             endpoint: "http://172.16.91.150:5000/v2.0/tokens"
             username: admin
@@ -51,27 +55,27 @@ hosts:
             # limits_nofile: 65536
             # num.network.threads: 3
 
-    # storm-nimbus:
-    #     count: 1
-    #     provider:
-    #         virtualbox:
-    #             memory: 1024
-    #             forwarded_ports:
-    #                 - guest: 8080
-    #                   host: 28080
-    #         openstack:
-    #             flavor: m1.medium
-    #             image: ubuntu
-    #             floating_ip_pool: public
+    storm-nimbus:
+        count: 1
+        provider:
+            virtualbox:
+                memory: 1024
+                forwarded_ports:
+                    - guest: 8080
+                      host: 28080
+            openstack:
+                flavor: m1.medium
+                image: ubuntu
+                floating_ip_pool: public
 
-    # storm-supervisor:
-    #     count: 2
-    #     provider:
-    #         virtualbox:
-    #             memory: 1024
-    #         openstack:
-    #             flavor: m1.medium
-    #             image: ubuntu
-    #             floating_ip_pool: public
+    storm-supervisor:
+        count: 2
+        provider:
+            virtualbox:
+                memory: 1024
+            openstack:
+                flavor: m1.medium
+                image: ubuntu
+                floating_ip_pool: public
 
 
