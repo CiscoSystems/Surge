@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Creating a producer. Please write some messages and start a consumer in a different node to receive them."
+
+/usr/local/etc/kafka/bin/kafka-console-producer.sh --broker-list {% for host in groups['kafka'] -%} {{ hostvars[host]['ansible_ssh_host'] }}:9092,
+{%- endfor %} --topic test 

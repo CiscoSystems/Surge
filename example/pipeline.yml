@@ -35,7 +35,7 @@ hosts:
 
 
     kafka:
-        count: 2
+        count: 1
         provider:
             virtualbox:
                 memory: 2048

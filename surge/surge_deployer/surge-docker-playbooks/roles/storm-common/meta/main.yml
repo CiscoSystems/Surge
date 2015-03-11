@@ -1,0 +1,4 @@
+---
+dependencies:
+    - { role: zeromq }
+    - { role: jzmq }

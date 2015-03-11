@@ -1,0 +1,6 @@
+#!/bin/bash
+
+echo "Creating a consumer. Please start a producer in a different node and write some messages."
+
+/usr/local/etc/kafka/bin/kafka-console-consumer.sh --zookeeper {% for host in groups['zookeeper'] -%} {{ hostvars[host]['ansible_ssh_host'] }}:2181,
+{%- endfor %} --topic test --from-beginning

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+#Creating a test topic
+
+echo "Creating a test topic"
+/usr/local/etc/kafka/bin/kafka-topics.sh --create --zookeeper {% for host in groups['zookeeper'] -%} {{ hostvars[host]['ansible_ssh_host'] }}:2181,
+{%- endfor %} --replication-factor 1 --partitions 1 --topic test
+
+
+echo "Please check that the topic is replicated the correct amount of times"
+/usr/local/etc/kafka/bin/kafka-topics.sh --describe --zookeeper {% for host in groups['zookeeper'] -%} {{ hostvars[host]['ansible_ssh_host'] }}:2181,
+{%- endfor %} --topic test

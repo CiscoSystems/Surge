@@ -1,0 +1,59 @@
+- name: Stopping any previous installation of kafka
+  supervisorctl: name=kafka state=stopped
+
+- name: Creating the kafkauser group
+  action: group gid={{ kafka_gid }} name={{ kafka_group }} state=present
+
+- name: Creating the user directory
+  action: file path="/home/{{ kafka_user }}" state=directory
+
+- name: Creating the kafka user
+  user: uid={{ kafka_uid }} name={{ kafka_user }} group={{ kafka_group }} home="/home/{{ kafka_user }}" shell=/bin/bash state=present
+
+- name: Copying Kafka
+  copy: src=kafka_2.9.2-{{ kafka_version }}.tgz dest=/tmp/kafka_2.9.2-{{ kafka_version }}.tgz
+
+- name: Extracting to /usr/local/etc
+  command: tar -xvzf /tmp/kafka_2.9.2-{{ kafka_version }}.tgz chdir=/usr/local/etc creates=/usr/local/etc/kafka_2.9.2-{{ kafka_version }}
+
+- name: Updating permissions
+  sudo: yes
+  file: path=/usr/local/etc/kafka_2.9.2-{{ kafka_version }} owner={{ kafka_user }} group={{ kafka_group }} state=directory recurse=yes
+
+- name: Creating link to folder
+  file: path=/usr/local/etc/kafka src=/usr/local/etc/kafka_2.9.2-{{ kafka_version }} state=link force=yes
+
+- name: Creating the logs dir
+  file: path={{ kafka_logs_dir }} owner={{ kafka_user }} group={{ kafka_group }} mode=0750 state=directory
+
+- name: Creating supervisord's script
+  template: src=kafka.conf.j2 dest=/etc/supervisor/conf.d/kafka.conf owner=root group=root mode=0644
+
+- name: Running Supervisor Docker Dependency 
+  shell: supervisord
+  ignore_errors: yes 
+
+- name: Ensuring supervisord finds it
+  supervisorctl: name=kafka state=present
+
+- name: Create a unique ID
+  shell: sed 's/[^0-9]//g' /etc/hostname
+  register: id
+
+- name: Updating the server.properties conf
+  template: src=server.properties.j2 dest=/usr/local/etc/kafka/config/server.properties owner={{ kafka_user }} group={{ kafka_group }} mode=0644
+
+#- name: Restarting Kafka
+#  supervisorctl: name=kafka state=restarted
+
+- name: Copying test scripts
+  action: file path="/surge/test-scripts" state=directory
+
+- name: Copying test scripts 2
+  template: src=test-consumer.sh.j2 dest=/surge/test-scripts/test-consumer.sh owner={{ kafka_user }} group={{ kafka_group }} mode=0777
+
+- name: Copying test scripts 3
+  template: src=test-topic.sh.j2 dest=/surge/test-scripts/test-topic.sh owner={{ kafka_user }} group={{ kafka_group }} mode=0777
+
+- name: Copying test scripts 4
+  template: src=test-producer.sh.j2 dest=/surge/test-scripts/test-producer.sh owner={{ kafka_user }} group={{ kafka_group }} mode=0777

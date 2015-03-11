@@ -1,0 +1,31 @@
+- hosts: all
+  # vars_files:
+  #   - ../pipeline.yml
+  roles:
+    - role: base
+    - role: java
+
+- hosts: zookeeper
+  # vars_files:
+  #   - ../pipeline.yml
+  roles:
+    - role: zookeeper
+
+- hosts: kafka
+  # vars_files:
+  #   - ../pipeline.yml
+  roles:    
+    - role: kafka
+
+- hosts: storm-nimbus
+  # vars_files:
+  #   - ../pipeline.yml
+  roles:    
+    - role: storm-nimbus
+
+- hosts: storm-supervisor
+  # vars_files:
+  #   - ../pipeline.yml
+  roles:    
+    - role: storm-supervisor
+

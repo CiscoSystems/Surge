@@ -1,0 +1,56 @@
+- name: Stopping any previous installation of zookeeper
+  supervisorctl: name=zookeeper state=stopped
+
+- name: Installing zookeeper dependencies
+  apt: pkg={{ item }}
+  with_items:
+    - pkg-config
+    - connect-proxy
+  sudo: yes
+
+- name: Creating zookeeper group
+  action: group gid={{ zookeeper_gid }} name={{ zookeeper_group }} state=present
+
+- name: Creating the zookeeper's user home directory
+  action: file path="/home/{{ zookeeper_user }}" state=directory
+
+- name: Creating the zookeeper's user
+  user: uid={{ zookeeper_uid }} name={{ zookeeper_user }} group={{ zookeeper_group }} home="/home/{{ zookeeper_user }}" shell=/bin/bash state=present
+
+- name: Downloading zookeeper
+  command: wget http://apache.mirrors.pair.com/zookeeper/zookeeper-{{ zookeeper_version }}/zookeeper-{{ zookeeper_version }}.tar.gz chdir=/tmp creates=/tmp/zookeeper-{{ zookeeper_version }}.tar.gz
+
+- name: Extracting Zookeeper to /usr/local/etc
+  command: tar -xvzf /tmp/zookeeper-{{ zookeeper_version }}.tar.gz chdir=/usr/local/etc creates=/usr/local/etc/zookeeper-{{ zookeeper_version }}
+
+- name: Updating permissions
+  file: path=/usr/local/etc/zookeeper-{{ zookeeper_version }} owner={{ zookeeper_user }} group={{ zookeeper_group }} state=directory recurse=yes
+
+- name: Linking to the folder
+  file: path=/usr/local/etc/zookeeper src=/usr/local/etc/zookeeper-{{ zookeeper_version }} state=link force=yes
+
+- name: Creating the zookeeper data directory
+  file: path={{ zookeeper_data_dir }} owner={{ zookeeper_user }} group={{ zookeeper_group }} mode=0750 state=directory
+
+- name: Create a unique ID
+  shell: sed 's/[^0-9]//g' /etc/hostname
+  register: id
+
+- name: Updating the configuration
+  template: src=zoo.cfg.j2 dest=/usr/local/etc/zookeeper/conf/zoo.cfg owner={{ zookeeper_user }} group={{ zookeeper_group }} mode=0644
+
+- name: Updating the myid file
+  template: src=myid.j2 dest={{ zookeeper_data_dir }}/myid owner={{ zookeeper_user }} group={{ zookeeper_group }} mode=0644
+
+- name: Creating the supervisord script
+  template: src=zookeeper.conf.j2 dest=/etc/supervisor/conf.d/zookeeper.conf owner=root group=root mode=0644
+
+- name: Running Supervisor Docker Dependency
+  shell: supervisord
+  ignore_errors: yes 
+
+- name: Ensuring supervisord finds it
+  supervisorctl: name=zookeeper state=present
+
+- name: Restarting Zookeeper
+  supervisorctl: name=zookeeper state=restarted

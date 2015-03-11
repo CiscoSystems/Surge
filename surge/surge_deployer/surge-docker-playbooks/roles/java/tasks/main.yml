@@ -1,0 +1,38 @@
+- name: Uninstalling openjdk
+  apt: pkg=openjdk state=absent purge=true
+
+- name: Creating Java directory
+  file: path=/usr/local/java state=directory
+
+- name: Deleting any previous copy of JDK in /tmp
+  file: path="/tmp/{{ jdk_filename }}" state=absent
+
+- name: Copying Java
+  copy: src=jdk-7u25-linux-x64.gz dest=/tmp/jdk-7u25-linux-x64.gz
+
+- name: Extracting files
+  command: tar -xvzf /tmp/{{ jdk_filename }} chdir=/usr/local/java creates=/usr/local/java/{{ jdk_version }}
+
+- name: Creating link
+  file: path=/usr/local/java/jdk src=/usr/local/java/{{ jdk_version }} state=link force=yes
+
+- name: Adding paths
+  lineinfile: dest=/etc/profile regexp='^JAVA_HOME=/usr/local/java/jdk' line='JAVA_HOME=/usr/local/java/jdk' state=present
+
+- name: Adding more paths
+  lineinfile: dest=/etc/profile regexp='^PATH=.*JAVA_HOME.*' line="PATH=$PATH:$HOME/bin:$JAVA_HOME/bin" state=present
+
+- name: Executing post-installation commands
+  command: "{{ item }}"
+  with_items:
+    - update-alternatives --install "/usr/bin/java" "java" "/usr/local/java/jdk/bin/java" 1
+    - update-alternatives --install "/usr/bin/javac" "javac" "/usr/local/java/jdk/bin/javac" 1
+    - update-alternatives --install "/usr/bin/javaws" "javaws" "/usr/local/java/jdk/bin/javaws" 1
+    - update-alternatives --install "/usr/bin/javah" "javah" "/usr/local/java/jdk/bin/javah" 1
+    - update-alternatives --install "/usr/bin/jar" "jar" "/usr/local/java/jdk/bin/jar" 1
+    - update-alternatives --set java /usr/local/java/jdk/bin/java
+    - update-alternatives --set javac /usr/local/java/jdk/bin/javac
+    - update-alternatives --set javaws /usr/local/java/jdk/bin/javaws
+    - update-alternatives --set javah /usr/local/java/jdk/bin/javah
+    - update-alternatives --set jar /usr/local/java/jdk/bin/jar
+

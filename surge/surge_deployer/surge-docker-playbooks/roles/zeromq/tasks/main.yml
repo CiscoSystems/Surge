@@ -1,0 +1,21 @@
+- name: Installing dependencies
+  apt: pkg={{ item }}
+  with_items:
+    - uuid-dev
+  sudo: yes
+
+- name: Copying ZeroMQ
+  copy: src=zeromq-2.1.7.tar.gz dest=/tmp/zeromq-2.1.7.tar.gz
+
+- name: Extracting ZeroMQ
+  command: tar -xzf /tmp/zeromq-2.1.7.tar.gz chdir=/tmp creates=/tmp/zeromq-2.1.7
+
+- name: Configuring ZeroMQ
+  command: ./configure chdir=/tmp/zeromq-2.1.7
+
+- name: Compiling ZeroMQ
+  command: make chdir=/tmp/zeromq-2.1.7
+
+- name: Installing ZeroMQ
+  command: make install chdir=/tmp/zeromq-2.1.7
+  sudo: yes

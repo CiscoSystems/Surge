@@ -1,0 +1,33 @@
+- name: Installing dependencies
+  apt: pkg={{ item }}
+  with_items:
+    - libtool
+  sudo: yes
+
+- name: Cloning JZMQ
+  git: repo=https://github.com/nathanmarz/jzmq dest=/tmp/jzmq
+
+- name: Autogenerating JZMQ
+  command: ./autogen.sh chdir=/tmp/jzmq
+
+- name: Creating classdist_noinst.stamp
+  command: touch /tmp/jzmq/src/classdist_noinst.stamp
+
+- name: Redefining class path
+  shell: CLASSPATH=.:./.:$CLASSPATH javac -d . org/zeromq/ZMQ.java org/zeromq/ZMQException.java org/zeromq/ZMQQueue.java org/zeromq/ZMQForwarder.java org/zeromq/ZMQStreamer.java chdir=/tmp/jzmq/src
+
+- name: Autogenerating JZMQ again
+  command: ./autogen.sh chdir=/tmp/jzmq
+
+- name: Configuring JZMQ
+  command: ./configure chdir=/tmp/jzmq
+  environment:
+        JAVA_HOME: /usr/local/java/jdk
+
+- name: Compiling JZMQ
+  command: sudo make chdir=/tmp/jzmq
+  sudo: yes
+
+- name: Installing JZMQ
+  command: make install chdir=/tmp/jzmq
+  sudo: yes

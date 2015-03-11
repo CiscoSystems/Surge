@@ -1,0 +1,3 @@
+- name: restart zookeeper
+  supervisorctl: name=zookeeper state=restarted
+  sudo: yes

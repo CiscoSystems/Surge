@@ -1,0 +1,28 @@
+- name: Updating the repos
+  shell: sudo apt-get update
+  sudo: yes
+
+- name: Installing common packages
+  apt: pkg={{ item }}
+  with_items:
+    - automake
+    - autoconf
+    - build-essential
+    - git
+    - vim
+    - python
+    - python3
+    - python-dev
+    - python-setuptools
+    - supervisor
+    - pkg-config
+    # - mongodb
+  sudo: yes
+
+- name: Installing pip
+  shell: easy_install pip
+  sudo: yes
+
+- name: Installing virtualenv
+  pip: name=virtualenv
+  sudo: yes

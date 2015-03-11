@@ -1,0 +1,13 @@
+[program:kafka]
+command=/usr/local/etc/kafka/bin/kafka-server-start.sh /usr/local/etc/kafka/config/server.properties
+user={{kafka_user}}
+autostart=true
+autorestart=true
+stopasgroup=true
+startsecs=10
+startretries=999
+log_stdout=true
+log_stderr=true
+logfile=/var/log/kafka/kafka.log
+logfile_maxbytes=60MB
+logfile_backups=10
