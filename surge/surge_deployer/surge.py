@@ -14,13 +14,18 @@ class VagrantDeployer:
     def __init__(self, name, pipeline=None, provider=None):
         self.name = name
         self.path = BASE_DIR + '/pipelines/' + name
+
         if not os.path.exists(self.path):
             if provider is "virtualbox":
                 shutil.copytree(
                     BASE_DIR + '/basevb', self.path)
-            else:
+            elif provider is "openstack":
                 shutil.copytree(
                     BASE_DIR + '/baseos', self.path)
+            else:
+		shutil.copytree(
+		    BASE_DIR + '/basedocker', self.path)
+  		shutil.copytree(BASE_DIR+'/' ,BASE_DIR+'/pipelines')
         if pipeline is not None:
             print pipeline
             self.setPipeline(pipeline)
@@ -71,3 +76,9 @@ class VagrantDeployer:
         if self.exists(self.name):
             self.action("destroy")
         shutil.rmtree(self.path)
+
+if __name__ == '__main__':
+	print BASE_DIR
+	v = VagrantDeployer('test-docker',provider='docker')
+	v.vagrant('up',provider='docker')
+	#v.vagrant('destroy', provider='docker')
