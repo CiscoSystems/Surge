@@ -25,7 +25,7 @@ class VagrantDeployer:
             else:
 		shutil.copytree(
 		    BASE_DIR + '/basedocker', self.path)
-  		shutil.copytree(BASE_DIR+'/' ,BASE_DIR+'/pipelines')
+  		#shutil.copytree(BASE_DIR+'/' ,BASE_DIR+'/pipelines')
         if pipeline is not None:
             print pipeline
             self.setPipeline(pipeline)
