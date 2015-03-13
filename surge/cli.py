@@ -20,6 +20,7 @@ def main(ctx, debug):
 @click.option('--virtualbox', 'provider', flag_value='virtualbox',
               default=True)
 @click.option('--openstack', 'provider', flag_value='openstack')
+@click.option('--docker', 'provider', flag_value='docker')
 @click.pass_context
 def deploy(ctx, filename, name, provider):
     """Deploy a new pipeline"""
@@ -50,6 +51,7 @@ def provision(ctx, name):
 @click.option('--virtualbox', 'provider', flag_value='virtualbox',
               default=True)
 @click.option('--openstack', 'provider', flag_value='openstack')
+@click.option('--docker', 'provider', flag_value='docker')
 @click.pass_context
 def deploy_template(ctx, template, name, provider):
     """Deploy a pipeline from a template"""
