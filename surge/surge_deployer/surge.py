@@ -10,7 +10,6 @@ BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 class VagrantDeployer:
-
     def __init__(self, name, pipeline=None, provider=None):
         self.name = name
         self.path = BASE_DIR + '/pipelines/' + name
@@ -53,19 +52,16 @@ class VagrantDeployer:
         else:
             return self.v.provision()
 
-    def action(self, action, provider="virtualbox"):
-        return self.vagrant(action, provider)
-
     def deploy(self, provider):
         print("Deploying with provider: " + provider)
-        return self.action("up", provider=provider)
+        return self._action("up", provider=provider)
 
     def provision(self):
-        return self.action("provision")
+        return self._action("provision")
 
     def status(self):
         if self.exists(self.name):
-            return self.action("status")
+            return self._action("status")
         else:
             return "Undeployed"
 
@@ -74,5 +70,8 @@ class VagrantDeployer:
 
     def destroy(self):
         if self.exists(self.name):
-            self.action("destroy")
+            self._action("destroy")
         shutil.rmtree(self.path)
+
+    def _action(self, action, provider="virtualbox"):
+        return self.vagrant(action, provider)
