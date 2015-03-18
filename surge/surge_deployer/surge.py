@@ -27,7 +27,7 @@ class VagrantDeployer:
 
         if pipeline is not None:
             print pipeline
-            self.setPipeline(pipeline)
+            self.set_pipeline(pipeline)
             # self.ansibleManager.createInventory()
 
         self.v = vagrant.Vagrant(
@@ -37,9 +37,6 @@ class VagrantDeployer:
         if os.path.exists(self.path) and os.path.exists(self.path + '/pipeline.yml'):
             return True
         return False
-
-    def setPipeline(self, pipeline):
-        shutil.copy(pipeline, self.path + "/pipeline.yml")
 
     def vagrant(self, action, provider="virtualbox"):
         if action is 'up':
@@ -75,3 +72,6 @@ class VagrantDeployer:
 
     def _action(self, action, provider="virtualbox"):
         return self.vagrant(action, provider)
+
+    def _set_pipeline(self, pipeline):
+        shutil.copy(pipeline, self.path + "/pipeline.yml")
