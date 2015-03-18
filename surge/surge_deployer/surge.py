@@ -33,11 +33,6 @@ class VagrantDeployer:
         self.v = vagrant.Vagrant(
             self.path, quiet_stdout=False, quiet_stderr=False)
 
-    def exists(self, name):
-        if os.path.exists(self.path) and os.path.exists(self.path + '/pipeline.yml'):
-            return True
-        return False
-
     def vagrant(self, action, provider="virtualbox"):
         if action is 'up':
             print(provider)
@@ -57,7 +52,7 @@ class VagrantDeployer:
         return self._action("provision")
 
     def status(self):
-        if self.exists(self.name):
+        if self._exists(self.name):
             return self._action("status")
         else:
             return "Undeployed"
@@ -66,12 +61,17 @@ class VagrantDeployer:
         return self.v.ssh_config(vm_name=vmname)
 
     def destroy(self):
-        if self.exists(self.name):
+        if self._exists(self.name):
             self._action("destroy")
         shutil.rmtree(self.path)
 
     def _action(self, action, provider="virtualbox"):
         return self.vagrant(action, provider)
+
+    def _exists(self, name):
+        if os.path.exists(self.path) and os.path.exists(self.path + '/pipeline.yml'):
+            return True
+        return False
 
     def _set_pipeline(self, pipeline):
         shutil.copy(pipeline, self.path + "/pipeline.yml")
