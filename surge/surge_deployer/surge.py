@@ -1,10 +1,6 @@
 import vagrant
-import sys
-import StringIO
-import time
 import os
 import shutil
-import ansible
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
@@ -27,7 +23,7 @@ class VagrantDeployer:
 
         if pipeline is not None:
             print pipeline
-            self.set_pipeline(pipeline)
+            self._set_pipeline(pipeline)
             # self.ansibleManager.createInventory()
 
         self.v = vagrant.Vagrant(
