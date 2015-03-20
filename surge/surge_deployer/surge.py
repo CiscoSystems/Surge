@@ -11,23 +11,14 @@ class VagrantDeployer:
         self.path = BASE_DIR + '/pipelines/' + name
 
         if not os.path.exists(self.path):
-            if provider is "virtualbox":
-                shutil.copytree(
-                    BASE_DIR + '/basevb', self.path)
-            elif provider is "openstack":
-                shutil.copytree(
-                    BASE_DIR + '/baseos', self.path)
-            else:
-                shutil.copytree(
-                    BASE_DIR + '/basedocker', self.path)
+            self._setup_pipeline_env(provider)
 
         if pipeline is not None:
             print pipeline
             self._set_pipeline(pipeline)
             # self.ansibleManager.createInventory()
 
-        self.v = vagrant.Vagrant(
-            self.path, quiet_stdout=False, quiet_stderr=False)
+        self._get_vagrant()
 
     def vagrant(self, action, provider="virtualbox"):
         if action is 'up':
@@ -69,5 +60,17 @@ class VagrantDeployer:
             return True
         return False
 
+    def _get_vagrant(self):
+        self.v = vagrant.Vagrant(
+            self.path, quiet_stdout=False, quiet_stderr=False)
+
     def _set_pipeline(self, pipeline):
         shutil.copy(pipeline, self.path + "/pipeline.yml")
+
+    def _setup_pipeline_env(self, provider):
+        if provider is "virtualbox":
+            shutil.copytree(BASE_DIR + '/basevb', self.path)
+        elif provider is "openstack":
+            shutil.copytree(BASE_DIR + '/baseos', self.path)
+        else:
+            shutil.copytree(BASE_DIR + '/basedocker', self.path)
