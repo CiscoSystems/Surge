@@ -49,21 +49,21 @@ def provision(ctx, name):
 @main.command()
 @click.argument('template', required=True)
 @click.option('--name', '-n', required=True)
-@click.option('--virtualbox', 'provider', flag_value='virtualbox',
-              default=True)
+@click.option('--virtualbox', 'provider', flag_value='virtualbox', default=True)
 @click.option('--openstack', 'provider', flag_value='openstack')
 @click.option('--docker', 'provider', flag_value='docker')
 @click.pass_context
 def deploy_template(ctx, template, name, provider):
     """Deploy a pipeline from a template"""
     if (ctx.obj['DEBUG']):
-        print("Pipeline filename: " + filename)
+        print("Pipeline filename: " + name)
     print("Provider: " + provider)
     # Creating ansible inventory file
     # create_ansible_inventory(ctx, filename, provider)
     p = os.listdir(CLI_BASE_DIR + '/surge_deployer/templates')
     if template in p:
-        v = surge.VagrantDeployer(name, CLI_BASE_DIR + '/surge_deployer/templates/' + template + "/pipeline.yml", provider)
+        v = surge.VagrantDeployer(
+            name, CLI_BASE_DIR + '/surge_deployer/templates/' + template + "/pipeline.yml", provider)
         print(provider)
         v.deploy(provider)
     else:
