@@ -3,6 +3,8 @@ from surge_deployer import surge
 import os
 import shutil
 
+CLI_BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+
 
 @click.group()
 @click.option('--debug/--no-debug', default=False)
@@ -17,8 +19,7 @@ def main(ctx, debug):
 @main.command()
 @click.argument('filename', required=True)
 @click.option('--name', '-n', required=True)
-@click.option('--virtualbox', 'provider', flag_value='virtualbox',
-              default=True)
+@click.option('--virtualbox', 'provider', flag_value='virtualbox', default=True)
 @click.option('--openstack', 'provider', flag_value='openstack')
 @click.option('--docker', 'provider', flag_value='docker')
 @click.pass_context
@@ -48,23 +49,21 @@ def provision(ctx, name):
 @main.command()
 @click.argument('template', required=True)
 @click.option('--name', '-n', required=True)
-@click.option('--virtualbox', 'provider', flag_value='virtualbox',
-              default=True)
+@click.option('--virtualbox', 'provider', flag_value='virtualbox', default=True)
 @click.option('--openstack', 'provider', flag_value='openstack')
 @click.option('--docker', 'provider', flag_value='docker')
 @click.pass_context
 def deploy_template(ctx, template, name, provider):
     """Deploy a pipeline from a template"""
     if (ctx.obj['DEBUG']):
-        print("Pipeline filename: " + filename)
+        print("Pipeline filename: " + name)
     print("Provider: " + provider)
     # Creating ansible inventory file
     # create_ansible_inventory(ctx, filename, provider)
-    p = os.listdir(
-        os.path.dirname(os.path.realpath(__file__)) + '/surge_deployer/templates')
+    p = os.listdir(CLI_BASE_DIR + '/surge_deployer/templates')
     if template in p:
-        v = surge.VagrantDeployer(name, os.path.dirname(os.path.realpath(
-            __file__)) + '/surge_deployer/templates/' + template + "/pipeline.yml", provider)
+        v = surge.VagrantDeployer(
+            name, CLI_BASE_DIR + '/surge_deployer/templates/' + template + "/pipeline.yml", provider)
         print(provider)
         v.deploy(provider)
     else:
@@ -77,8 +76,7 @@ def deploy_template(ctx, template, name, provider):
 @click.pass_context
 def create_template(ctx, filename, name):
     """Create a template from a pipeline file"""
-    path = os.path.dirname(
-        os.path.realpath(__file__)) + '/surge_deployer/templates/' + name
+    path = CLI_BASE_DIR + '/surge_deployer/templates/' + name
     if not os.path.exists(path):
         os.makedirs(path)
     shutil.copy(filename, path + "/pipeline.yml")
@@ -90,7 +88,7 @@ def create_template(ctx, filename, name):
 @click.pass_context
 def list_templates(ctx):
     """List all available templates"""
-    templates_dir = os.path.dirname(os.path.realpath(__file__)) + '/surge_deployer/templates'
+    templates_dir = CLI_BASE_DIR + '/surge_deployer/templates'
     if not os.path.exists(templates_dir):
         click.echo("No templates available: %s does not exist" % templates_dir)
         return
@@ -129,8 +127,7 @@ def status(ctx, name):
 @click.pass_context
 def list(ctx):
     """List currently deployed pipelines"""
-    p = os.listdir(
-        os.path.dirname(os.path.realpath(__file__)) + '/surge_deployer/pipelines')
+    p = os.listdir(CLI_BASE_DIR + '/surge_deployer/pipelines')
     if len(p) is 0:
         click.echo("No deployed pipelines")
     else:
@@ -156,6 +153,10 @@ def ssh(ctx, name, vmname):
     user = data['User']
     port = data['Port']
     key = data['IdentityFile']
+    _ssh(user, hostname, port, key)
+
+
+def _ssh(user, hostname, port, key):
     os.system('ssh ' + user + '@' + hostname + ' -p' + port +
               ' -i ' + key + ' -o StrictHostKeyChecking=no')
 
