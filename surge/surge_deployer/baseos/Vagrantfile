@@ -44,6 +44,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         os.image              = opts["provider"]["openstack"]['image'].to_s
         os.floating_ip_pool   = opts["provider"]["openstack"]['floating_ip_pool'].to_s
         os.keypair_name       = $provider['keypair_name'].to_s
+        os.networks           = $provider[ "networks"].to_s
       end
 
         if node.equal? $nodes.to_a.last[0] and i.equal? opts['count']

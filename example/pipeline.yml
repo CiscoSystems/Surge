@@ -15,12 +15,13 @@ provider:
             start_port: 8100
 
         openstack:
-            endpoint: "http://172.16.91.150:5000/v2.0/tokens"
+            endpoint: "http://172.31.231.195:5000/v2.0/tokens"
             username: admin
-            password: "1"
-            tenant: "admin"
-            keypair_name: vagrant
-            private_key_path: "/Users/msolanas/Downloads/vagrant.pem"
+            password: redhat
+            tenant: admin
+            keypair_name: TOKWII-M-90Y8
+            networks: f68c626a-4b8f-437c-8675-24ed9a3d3d02
+            private_key_path: /Users/tokwii/.ssh/id_rsa
 
 hosts:
     zookeeper:
@@ -30,8 +31,8 @@ hosts:
                 memory: 1024
             openstack:
                 flavor: m1.medium
-                image: ubuntu
-                floating_ip_pool: public
+                image: ubuntu14.04
+                floating_ip_pool: public-net
 
 
     kafka:
@@ -41,8 +42,8 @@ hosts:
                 memory: 2048
             openstack:
                 flavor: m1.medium
-                image: ubuntu
-                floating_ip_pool: public
+                image: ubuntu14.04
+                floating_ip_pool: public-net
         #To be supported soon
         # configuration:
             # controlled.shutdown.enable: true
@@ -65,17 +66,17 @@ hosts:
                       host: 28080
             openstack:
                 flavor: m1.medium
-                image: ubuntu
-                floating_ip_pool: public
+                image: ubuntu14.04
+                floating_ip_pool: public-net
 
     storm-supervisor:
-        count: 2
+        count: 1
         provider:
             virtualbox:
                 memory: 1024
             openstack:
                 flavor: m1.medium
-                image: ubuntu
-                floating_ip_pool: public
+                image: ubuntu14.04
+                floating_ip_pool: public-net
 
 
