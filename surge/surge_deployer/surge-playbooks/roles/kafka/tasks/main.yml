@@ -46,6 +46,17 @@
 - name: Creating supervisord's script
   template: src=kafka.conf.j2 dest=/etc/supervisor/conf.d/kafka.conf owner=root group=root mode=0644
 
+- name: Update Supervisor to take nice of added config files
+  shell: supervisorctl "{{ item }}"
+  with_items:
+  - reread
+  - update 
+  sudo: yes
+
+- name: Add hostname to /etc/hosts
+  shell: sed -i "2i 127.0.1.1 {{ inventory_hostname  }}" /etc/hosts
+  sudo: yes
+
 - name: Ensuring supervisord finds it
   supervisorctl: name=kafka state=present
 
@@ -58,6 +69,7 @@
 
 - name: Restarting Kafka
   supervisorctl: name=kafka state=restarted
+  ignore_errors: True 
 
 - name: Copying test scripts
   action: file path="/surge/test-scripts" state=directory
