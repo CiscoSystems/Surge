@@ -7,7 +7,7 @@ The currently supported sytems are:
  * Kafka
  * Storm
 
-*Note: This is an alpha status tool. We do not recommend using for production deployments. Please help us by reporting bugs.*
+*Note: This is an alpha status tool. We do not recommend using Surge for production deployments. Please help us by reporting bugs.*
 
 ## Requirements
 
