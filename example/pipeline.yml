@@ -15,13 +15,13 @@ provider:
             start_port: 8100
 
         openstack:
-            endpoint: "http://172.31.231.195:5000/v2.0/tokens"
-            username: admin
-            password: redhat
-            tenant: admin
-            keypair_name: TOKWII-M-90Y8
-            networks: f68c626a-4b8f-437c-8675-24ed9a3d3d02
-            private_key_path: /Users/tokwii/.ssh/id_rsa
+            endpoint: "<KEYSTONE_ENDPOINT>"
+            username: <username>
+            password: <password>
+            tenant: <tenant>
+            keypair_name: <keypair_name>
+            networks: <network_id>
+            private_key_path: <path_to_private_key>
 
 hosts:
     zookeeper:

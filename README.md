@@ -1,21 +1,5 @@
 # Surge
 
-## License
-
-Copyright 2015 Cisco Systems, Inc.
-
-Licensed under the Apache License, Version 2.0 (the "License"); you may
-not use this file except in compliance with the License. You may obtain
-a copy of the License at
-
-     http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-License for the specific language governing permissions and limitations
-under the License.
-
 Surge is a system to rapidly deploy and scale a stream processing system on OpenStack. It leverages Vagrant and Ansible, and supports both OpenStack as well as the local mode (with VirtualBox).
 
 The currently supported sytems are:
@@ -42,9 +26,9 @@ Install from this repository:
     $ source env/bin/activate
     $ git clone https://github.com/CiscoSystems/Surge.git
     $ pip install -e Surge/
-    $ surge deploy Surge/example/pipeline.yml -n KafkaPipeline
-    $ surge ssh KafkaPipeline [zookeeper1|kafka1|kafka2]
-    $ surge destroy KafkaPipeline
+    $ surge deploy Surge/example/pipeline.yml -n KafkaStormPipeline
+    $ surge ssh KafkaStormPipeline [zookeeper1|kafka1|...]
+    $ surge destroy KafkaStormPipeline
 
 ## Usage
 
@@ -61,6 +45,8 @@ You can use the file in the `example` folder as a base to configure your pipelin
     $ surge deploy path/to/pipeline.yml -n PipelineName
 
 ### Deploy a pipeline to OpenStack
+
+First ensure your pipeline.yml file has the correct configuration for your OpenStack cluster.
 
     $ surge deploy path/to/pipeline.yml -n PipelineName --openstack
 
@@ -94,3 +80,24 @@ If you are going to reuse the same pipeline frequently, you can add it as a temp
 ### List saved templates
 
     $ surge list_templates
+
+# Future work
+
+This project is an alpha version and is currently under further development. If
+you want to add a new feature, please submit a pull request.
+
+# License
+
+Copyright 2015 Cisco Systems, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License"); you may
+not use this file except in compliance with the License. You may obtain
+a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations
+under the License.
