@@ -1,30 +1,29 @@
 import os
 import shutil
 import yaml
+from random import randint
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 VAGRANT_DIR = os.path.join(BASE_DIR, 'basevb/.vagrant')
 STORM_VAR_DIR = os.path.join(
-    BASE_DIR, 'basevb/playbooks/roles/storm-common/defaults/main.yml')
+    BASE_DIR, 'surge-playbooks/roles/storm-common/defaults/main.yml')
 KAFKA_VAR_DIR = os.path.join(
-    BASE_DIR, 'basevb/playbooks/roles/kafka/defaults/kafka.yml')
+    BASE_DIR, 'surge-playbooks/roles/kafka/defaults/kafka.yml')
 
 
 def get_zookeeper_ip(pipeline_name):
     inventory_dir = os.path.join(
         BASE_DIR, 'pipelines/'
                   +pipeline_name
-                  +'/.vagrant/provisioners/ansible/inventory/deployer/vagrant_ansible_inventory')
+                  +'/ansible_vagrant_inventory')
     try:
         with open(inventory_dir) as f:
             data = f.read()
             for line in data.splitlines():
                 if line.startswith("#") or not line.strip():
                     continue
-                elif line.startswith("["):
-                    break
                 host_data = line.split(" ")
-                if host_data[0] == "zookeeper":
+                if host_data[0] == "zookeeper1":
                     return host_data[1].split("=")[1]
     except IOError:
         pass
@@ -35,7 +34,9 @@ def is_inventory_exist(pipeline_name):
     inventory_dir = os.path.join(
         BASE_DIR, 'pipelines/'
                   +pipeline_name
-                  +'/.vagrant/provisioners/ansible/inventory/deployer/vagrant_ansible_inventory')
+                  +'/ansible_vagrant_inventory')
+    print inventory_dir
+    print os.path.exists(inventory_dir)
     return os.path.exists(inventory_dir)
 
 
@@ -62,8 +63,9 @@ def write_kafka_vars(zookeeper_ip):
 
 def generate_kafka_component(pipeline_name, number_kafka=0):
     if is_inventory_exist(pipeline_name):
+        print "zk is 0"
         number_zk = 0
-        write_kafka_vars(get_zookeeper_ip())
+        write_kafka_vars(get_zookeeper_ip(pipeline_name))
     else:
         number_zk = 1
 
@@ -72,7 +74,7 @@ def generate_kafka_component(pipeline_name, number_kafka=0):
             'type': {
                 'virtualbox': {
                     'hostname_prefix': "",
-                    'ip_start': '10.20.30.10'
+                    'ip_start': '10.20.30.' + str(randint(2,150))
                 }
             },
         },
@@ -102,7 +104,7 @@ def generate_kafka_component(pipeline_name, number_kafka=0):
 def generate_storm_component(pipeline_name, number_supervisor=0):
     if is_inventory_exist(pipeline_name):
         number_zk = 0
-        write_storm_vars(get_zookeeper_ip())
+        write_storm_vars(get_zookeeper_ip(pipeline_name))
     else:
         number_zk = 1
 
@@ -111,7 +113,7 @@ def generate_storm_component(pipeline_name, number_supervisor=0):
             'type': {
                 'virtualbox': {
                     'hostname_prefix': "",
-                    'ip_start': '10.20.30.10'
+                    'ip_start': '10.20.30.' + str(randint(2,150))
                 }
             },
         },

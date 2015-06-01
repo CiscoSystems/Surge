@@ -34,3 +34,7 @@ class SurgeClient:
     def destroy_pipeline(self, pipeline_name):
         deployer = VagrantDeployer(pipeline_name)
         deployer.destroy()
+
+    def provision_pipeline(self, pipeline_name):
+        deployer = VagrantDeployer(pipeline_name)
+        deployer.provision()
