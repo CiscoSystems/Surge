@@ -1,0 +1,16 @@
+hosts:
+  kafka:
+    count: 1
+    provider:
+      virtualbox:
+        memory: 2048
+  zookeeper:
+    count: 1
+    provider:
+      virtualbox:
+        memory: 1024
+provider:
+  type:
+    virtualbox:
+      hostname_prefix: ''
+      ip_start: 10.20.30.10

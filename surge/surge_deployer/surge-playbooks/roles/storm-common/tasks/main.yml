@@ -1,5 +1,3 @@
-
-
 # Copyright 2015 Cisco Systems, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -49,5 +47,13 @@
 - name: Creating the logs dir
   file: path=/var/log/storm owner=storm group=storm mode=0750 state=directory
 
+#- name: Updating the storm.yaml conf
+#  template: src=storm.yaml.j2 dest=/usr/local/etc/storm/conf/storm.yaml owner=storm group=storm mode=0644
+
 - name: Updating the storm.yaml conf
   template: src=storm.yaml.j2 dest=/usr/local/etc/storm/conf/storm.yaml owner=storm group=storm mode=0644
+  when: "'zookeeper' in {{ groups }}"
+
+- name: Adding storm.yml config for additional server
+  template: src=supervisor.yaml.j2 dest=/usr/local/etc/storm/conf/storm.yaml owner=storm group=storm mode=0644
+  when: "'zookeeper' not in {{ groups }}"

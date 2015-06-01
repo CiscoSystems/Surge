@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 class VagrantDeployer:
-    def __init__(self, name, pipeline=None, provider=None):
+    def __init__(self, name, pipeline=None, provider="virtualbox"):
         self.name = name
         self.path = BASE_DIR + '/pipelines/' + name
 

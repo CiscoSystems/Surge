@@ -64,8 +64,16 @@
   shell: sed 's/[^0-9]//g' /etc/hostname
   register: id
 
+#- name: Updating the server.properties conf
+#  template: src=server.properties.j2 dest=/usr/local/etc/kafka/config/server.properties owner={{ kafka_user }} group={{ kafka_group }} mode=0644
+
 - name: Updating the server.properties conf
   template: src=server.properties.j2 dest=/usr/local/etc/kafka/config/server.properties owner={{ kafka_user }} group={{ kafka_group }} mode=0644
+  when: "'zookeeper' in {{ groups }}"
+
+- name: Updating server.properties conf for the added kafka node
+  template: src=add.server.properties.j2 dest=/usr/local/etc/kafka/config/server.properties owner={{ kafka_user }} group={{ kafka_group }} mode=0644
+  when: "'zookeeper' not in {{ groups }}"
 
 - name: Restarting Kafka
   supervisorctl: name=kafka state=restarted

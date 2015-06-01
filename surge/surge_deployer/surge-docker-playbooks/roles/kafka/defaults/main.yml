@@ -1,5 +1,3 @@
-
-
 # Copyright 2015 Cisco Systems, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
@@ -23,4 +21,4 @@ kafka_gid: 51521
 kafka_logs_dir: /var/log/kafka
 kafka_port: 9092
 kafka_interface: eth1
-
+include: kafka.yml
