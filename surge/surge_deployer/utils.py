@@ -13,9 +13,7 @@ KAFKA_VAR_DIR = os.path.join(
 
 def get_zookeeper_ip(pipeline_name):
     inventory_dir = os.path.join(
-        BASE_DIR, 'pipelines/'
-                  +pipeline_name
-                  +'/ansible_vagrant_inventory')
+        BASE_DIR, 'pipelines/' + pipeline_name + '/ansible_vagrant_inventory')
     try:
         with open(inventory_dir) as f:
             data = f.read()
@@ -32,11 +30,7 @@ def get_zookeeper_ip(pipeline_name):
 
 def is_inventory_exist(pipeline_name):
     inventory_dir = os.path.join(
-        BASE_DIR, 'pipelines/'
-                  +pipeline_name
-                  +'/ansible_vagrant_inventory')
-    print inventory_dir
-    print os.path.exists(inventory_dir)
+        BASE_DIR, 'pipelines/' + pipeline_name + '/ansible_vagrant_inventory')
     return os.path.exists(inventory_dir)
 
 
@@ -63,7 +57,6 @@ def write_kafka_vars(zookeeper_ip):
 
 def generate_kafka_component(pipeline_name, number_kafka=0):
     if is_inventory_exist(pipeline_name):
-        print "zk is 0"
         number_zk = 0
         write_kafka_vars(get_zookeeper_ip(pipeline_name))
     else:
@@ -74,7 +67,7 @@ def generate_kafka_component(pipeline_name, number_kafka=0):
             'type': {
                 'virtualbox': {
                     'hostname_prefix': "",
-                    'ip_start': '10.20.30.' + str(randint(2,150))
+                    'ip_start': '10.20.30.' + str(randint(2, 250))
                 }
             },
         },
@@ -113,7 +106,7 @@ def generate_storm_component(pipeline_name, number_supervisor=0):
             'type': {
                 'virtualbox': {
                     'hostname_prefix': "",
-                    'ip_start': '10.20.30.' + str(randint(2,150))
+                    'ip_start': '10.20.30.' + str(randint(2, 250))
                 }
             },
         },
@@ -131,9 +124,9 @@ def generate_storm_component(pipeline_name, number_supervisor=0):
                 "provider": {
                     'virtualbox': {
                         'memory': 1024,
-                            'forwarded_ports': {
-                                'guest': 8080,
-                                'host': 28080
+                        'forwarded_ports': {
+                            'guest': 8080,
+                            'host': 28080
                         }
                     }
                 }

@@ -16,25 +16,49 @@ from surge.surge_deployer.surge import VagrantDeployer
 import surge.surge_deployer.utils as surge_utils
 
 
-class SurgeClient:
+class SurgeAPI:
+    """
+    Provide Surge functionality to external usage.
+    """
 
     def launch_kafka(self, pipeline_name, brokers):
+        """ Launching Apache Kafka
+        :param pipeline_name: the identifier of the pipeline
+        :param brokers: the number of kafka brokers
+        :return: none. (should be status or exception)
+        """
         deployer = VagrantDeployer(pipeline_name)
         surge_utils.generate_kafka_component(pipeline_name, brokers)
         deployer.deploy("virtualbox")
 
     def launch_storm(self, pipeline_name, supervisors):
+        """ Launching Apache Storm
+        :param pipeline_name: the identifier of the pipeline
+        :param supervisors: the number of supervisor nodes
+        :return: none. (should be status or exception)
+        """
         deployer = VagrantDeployer(pipeline_name)
         surge_utils.generate_storm_component(pipeline_name, supervisors)
         deployer.deploy("virtualbox")
 
     def list_pipeline(self):
+        """ List existing pipelines
+        :return: the list of current pipelines
+        """
         return surge_utils.list_pipelines()
 
     def destroy_pipeline(self, pipeline_name):
+        """ Destroying pipeline
+        :param pipeline_name: the target pipeline
+        :return: none. (should be status)
+        """
         deployer = VagrantDeployer(pipeline_name)
         deployer.destroy()
 
     def provision_pipeline(self, pipeline_name):
+        """ Provisioning pipeline
+        :param pipeline_name: the identifire of the pipeline
+        :return: none. (should be status)
+        """
         deployer = VagrantDeployer(pipeline_name)
         deployer.provision()
