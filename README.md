@@ -24,11 +24,14 @@ Install from this repository:
     $ pip install virtualenv
     $ virtualenv env
     $ source env/bin/activate
+    $ pip install surge
+
+To deploy the example pipeline:
+
     $ git clone https://github.com/CiscoSystems/Surge.git
-    $ pip install -e Surge/
-    $ surge deploy Surge/example/pipeline.yml -n KafkaStormPipeline
-    $ surge ssh KafkaStormPipeline [zookeeper1|kafka1|...]
-    $ surge destroy KafkaStormPipeline
+    $ surge deploy Surge/example/pipeline.yml -n KafkaPipeline
+    $ surge ssh KafkaPipeline [zookeeper1|kafka1|...]
+    $ surge destroy KafkaPipeline
 
 ## Usage
 

@@ -56,27 +56,27 @@ hosts:
             # limits_nofile: 65536
             # num.network.threads: 3
 
-    storm-nimbus:
-        count: 1
-        provider:
-            virtualbox:
-                memory: 1024
-                forwarded_ports:
-                    - guest: 8080
-                      host: 28080
-            openstack:
-                flavor: m1.medium
-                image: ubuntu14.04
-                floating_ip_pool: public-net
-
-    storm-supervisor:
-        count: 1
-        provider:
-            virtualbox:
-                memory: 1024
-            openstack:
-                flavor: m1.medium
-                image: ubuntu14.04
-                floating_ip_pool: public-net
-
-
+    # storm-nimbus:
+    #     count: 1
+    #     provider:
+    #         virtualbox:
+    #             memory: 1024
+    #             forwarded_ports:
+    #                 - guest: 8080
+    #                   host: 28080
+    #         openstack:
+    #             flavor: m1.medium
+    #             image: ubuntu14.04
+    #             floating_ip_pool: public-net
+    #
+    # storm-supervisor:
+    #     count: 1
+    #     provider:
+    #         virtualbox:
+    #             memory: 1024
+    #         openstack:
+    #             flavor: m1.medium
+    #             image: ubuntu14.04
+    #             floating_ip_pool: public-net
+    #
+    #

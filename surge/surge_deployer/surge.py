@@ -16,14 +16,16 @@
 import vagrant
 import os
 import shutil
+from os.path import expanduser
 
+HOME = expanduser("~")
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
 class VagrantDeployer:
     def __init__(self, name, pipeline=None, provider=None):
         self.name = name
-        self.path = BASE_DIR + '/pipelines/' + name
+        self.path = HOME + '/.surge/' + name
 
         if not os.path.exists(self.path):
             self._setup_pipeline_env(provider)
@@ -91,3 +93,11 @@ class VagrantDeployer:
             shutil.copytree(BASE_DIR + '/baseos', self.path)
         else:
             shutil.copytree(BASE_DIR + '/basedocker', self.path)
+        # Also copying the playbooks, to ensure deployed pipelines remain
+        # manageable in case of a change in the playbooks.
+        if provider == "docker":
+            shutil.copytree(BASE_DIR + '/surge-docker-playbooks', self.path
+                            + '/surge-docker-playbooks')
+        else:
+            shutil.copytree(BASE_DIR + '/surge-playbooks', self.path
+                            + '/surge-playbooks')

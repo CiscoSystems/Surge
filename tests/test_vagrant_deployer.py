@@ -54,13 +54,13 @@ def test_vagrant(fake_vd):
 def test_setup_pipeline_env(fake_vd):
     with mock.patch.object(shutil, 'copytree') as fake_copytree:
         fake_vd._setup_pipeline_env("virtualbox")
-        assert len(fake_copytree.mock_calls) == 1
+        assert len(fake_copytree.mock_calls) == 2
     with mock.patch.object(shutil, 'copytree') as fake_copytree:
         fake_vd._setup_pipeline_env("openstack")
-        assert len(fake_copytree.mock_calls) == 1
+        assert len(fake_copytree.mock_calls) == 2
     with mock.patch.object(shutil, 'copytree') as fake_copytree:
         fake_vd._setup_pipeline_env("some other things")
-        assert len(fake_copytree.mock_calls) == 1
+        assert len(fake_copytree.mock_calls) == 2
 
 
 def test_exists(fake_vd):

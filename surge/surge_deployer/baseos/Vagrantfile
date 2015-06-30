@@ -34,9 +34,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "trusty64"
   config.vm.box_url = 'https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box'
   config.ssh.username = 'ubuntu'
-  config.ssh.private_key_path = $provider['private_key_path'].to_s 
-  
-  
+  config.ssh.private_key_path = $provider['private_key_path'].to_s
+
+
   j = 1
   $nodes.each_pair do |node, opts|
     $ansible_groups[node]=[]
@@ -50,7 +50,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
 
       config.vm.define hostname.to_sym do |node_conf|
-      
+
       node_conf.vm.provider "openstack" do |os|
         os.ssh_timeout        = 400
         os.openstack_auth_url = $provider['endpoint'].to_s
@@ -66,7 +66,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
         if node.equal? $nodes.to_a.last[0] and i.equal? opts['count']
           node_conf.vm.provision "ansible" do |ansible|
-            ansible.playbook = "../../surge-playbooks/surge.yml"
+            ansible.playbook = "surge-playbooks/surge.yml"
             ansible.sudo = true
             ansible.limit = 'all'
             ansible.groups = $ansible_groups

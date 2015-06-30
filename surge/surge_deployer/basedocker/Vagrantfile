@@ -36,27 +36,27 @@ docker_host_ports = Array []
 
 $hosts.each do | server |
   $ansible_groups.store(server , $nodes[server]["count"])
-end 
+end
 
 
 ### Check whether ports are open ###
-def port_open?(ip, port, timeout) 
-        
-	start_time = Time.now  
-	current_time = start_time  
-  	while (current_time - start_time) <= timeout  
-		begin  
-        		 TCPSocket.new(ip, port)  
-        		 return true  
-  	        rescue Errno::ECONNREFUSED  
-    			sleep 0.1  
-   		end  
-  		current_time = Time.now  
- 	end 
+def port_open?(ip, port, timeout)
 
- 	return false  
+	start_time = Time.now
+	current_time = start_time
+  	while (current_time - start_time) <= timeout
+		begin
+        		 TCPSocket.new(ip, port)
+        		 return true
+  	        rescue Errno::ECONNREFUSED
+    			sleep 0.1
+   		end
+  		current_time = Time.now
+ 	end
 
- end  
+ 	return false
+
+ end
 
 Vagrant.configure(2) do |config|
   # The most common configuration options are documented and commented below.
@@ -64,27 +64,27 @@ Vagrant.configure(2) do |config|
   # https://docs.vagrantup.com.
   inventory = {}
   $ansible_groups.each do | key , value|
-     
+
       group_machines = Array[]
-      
+
       value.times do |k|
-  
+
           forwarded_ports = Array[]
 
           if key == "storm-nimbus"
 
 		$storm_port = port_open?("127.0.0.1",8080,0.5)
-		if not $storm_port 
+		if not $storm_port
 
 			forwarded_ports.push("8080:8080")
 		else
 			puts "Collision in 8080"
 			r = Random.new
-                	rand_storm = r.rand(10001..20000)	
+                	rand_storm = r.rand(10001..20000)
 			#puts "Ports in assigned to storm "+rand_storm.to_s
 			tmp_port = rand_storm.to_s+":8080"
-			forwarded_ports.push(tmp_port) 
-		end 
+			forwarded_ports.push(tmp_port)
+		end
 
 	  end
 
@@ -94,17 +94,17 @@ Vagrant.configure(2) do |config|
 	 # Check whether port is used
 	  while $port do
 		puts "port Collision in the rest of the nodes"
-	  	r = Random.new 
-	  	rand_start = r.rand(init_port..10000) 
+	  	r = Random.new
+	  	rand_start = r.rand(init_port..10000)
 	  	$rand_port = port_open?("127.0.0.1",rand_start,0.5)
-          	 
+
 	 	if not $rand_port
 	   		init_port = rand_start
 	  		break
 	 		#init_port = init_port + 500
 	   	end
          end
- 
+
           hostname = "#{key}_"+init_port.to_s
           ssh_port = init_port.to_s+":22"
           forwarded_ports.push(ssh_port)
@@ -118,26 +118,26 @@ Vagrant.configure(2) do |config|
                 v.vm.provider "docker" do |d|
                   d.build_dir = "."
 		  d.name = hostname
-                  d.has_ssh = true  
+                  d.has_ssh = true
                   d.ports = forwarded_ports
-                  #d.ports = [ssh_port] 
+                  #d.ports = [ssh_port]
 
                 end
               v.ssh.username = "root"
               v.ssh.password = "root"
-         end	
-      end 
+         end
+      end
 
      inventory.store(key,group_machines)
 
-  end 
- 
+  end
+
   config.vm.provision "ansible" do |ansible|
      ansible.groups = inventory
-     ansible.playbook = "../../surge-docker-playbooks/surge.yml"
+     ansible.playbook = "surge-docker-playbooks/surge.yml"
      ansible.sudo = true
      #ansible.limit = 'all'
      #ansible.verbose  = "vvvv"
   end
 
-end 
+end

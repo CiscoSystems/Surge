@@ -34,7 +34,7 @@ File.open('ansible_vagrant_inventory' ,'w') do |f|
   ip = $provider['ip_start']
   $nodes.each_pair do |node, opts|
     f.write "\n[#{node}]\n"
-    
+
     (1..opts['count']).each do |i|
       ip = IPAddr.new(ip).succ.to_s
       #Example: kafka1 ansible_ssh_host=10.20.30.81 broker_id=0
@@ -49,7 +49,7 @@ File.open('ansible_vagrant_inventory' ,'w') do |f|
   # f.write "surge-api ansible_ssh_host=10.20.30.10\n"
   #f.write "\n[pipeline:children]\nkafka\nzookeeper\n\n[pipeline:vars]\nvagrant=true\n"
 end
-    
+
 #---------------------#
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -77,11 +77,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
           vb.customize ["modifyvm", :id, "--name", hostname]
         end
         j = j + 1
-        
+
 
         if node.equal? $nodes.to_a.last[0] and i.equal? opts['count']
           node_conf.vm.provision "ansible" do |ansible|
-            ansible.playbook = "../../surge-playbooks/surge.yml"
+            ansible.playbook = "surge-playbooks/surge.yml"
             ansible.sudo = true
             ansible.limit = 'all'
             ansible.inventory_path = "ansible_vagrant_inventory"

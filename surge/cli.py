@@ -16,7 +16,9 @@ import click
 from surge_deployer import surge
 import os
 import shutil
+from os.path import expanduser
 
+HOME = expanduser("~")
 CLI_BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
 
@@ -74,10 +76,10 @@ def deploy_template(ctx, template, name, provider):
     print("Provider: " + provider)
     # Creating ansible inventory file
     # create_ansible_inventory(ctx, filename, provider)
-    p = os.listdir(CLI_BASE_DIR + '/surge_deployer/templates')
+    p = os.listdir(HOME + '/.surge/templates')
     if template in p:
         v = surge.VagrantDeployer(
-            name, CLI_BASE_DIR + '/surge_deployer/templates/' + template + "/pipeline.yml", provider)
+            name, HOME + '/.surge/templates/' + template + "/pipeline.yml", provider)
         print(provider)
         v.deploy(provider)
     else:
@@ -90,7 +92,7 @@ def deploy_template(ctx, template, name, provider):
 @click.pass_context
 def create_template(ctx, filename, name):
     """Create a template from a pipeline file"""
-    path = CLI_BASE_DIR + '/surge_deployer/templates/' + name
+    path = HOME + '/.surge/templates/' + name
     if not os.path.exists(path):
         os.makedirs(path)
     shutil.copy(filename, path + "/pipeline.yml")
@@ -102,7 +104,7 @@ def create_template(ctx, filename, name):
 @click.pass_context
 def list_templates(ctx):
     """List all available templates"""
-    templates_dir = CLI_BASE_DIR + '/surge_deployer/templates'
+    templates_dir = HOME + '/.surge/templates'
     if not os.path.exists(templates_dir):
         click.echo("No templates available: %s does not exist" % templates_dir)
         return
@@ -141,7 +143,7 @@ def status(ctx, name):
 @click.pass_context
 def list(ctx):
     """List currently deployed pipelines"""
-    p = os.listdir(CLI_BASE_DIR + '/surge_deployer/pipelines')
+    p = os.listdir(HOME + '/.surge/pipelines')
     if len(p) is 0:
         click.echo("No deployed pipelines")
     else:

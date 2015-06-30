@@ -30,6 +30,7 @@ setup(
     description='Surge command line client',
     long_description=__doc__,
     packages=find_packages(exclude=['tests']),
+
     include_package_data=True,
     zip_safe=False,
     platforms='any',
@@ -47,7 +48,6 @@ setup(
         'Operating System :: POSIX',
         'Operating System :: MacOS',
         'Operating System :: Unix',
-        'Operating System :: Windows',
         'Programming Language :: Python',
         'Programming Language :: Python :: 2',
         'Topic :: Software Development :: Libraries :: Python Modules',
