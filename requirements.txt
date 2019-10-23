@@ -16,7 +16,7 @@ ansible==1.8.4
 click==3.3
 cov-core==1.15.0
 coverage==3.7.1
-ecdsa==0.13
+ecdsa==0.13.3
 Jinja2==2.7.3
 MarkupSafe==0.23
 mock==1.0.1
