@@ -17,7 +17,7 @@ click==3.3
 cov-core==1.15.0
 coverage==3.7.1
 ecdsa==0.13
-Jinja2==2.7.3
+Jinja2==2.11.3
 MarkupSafe==0.23
 mock==1.0.1
 paramiko==1.15.2
