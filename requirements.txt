@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-ansible==1.8.4
+ansible==2.9.20
 click==3.3
 cov-core==1.15.0
 coverage==3.7.1
