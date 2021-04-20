@@ -21,7 +21,7 @@ Jinja2==2.7.3
 MarkupSafe==0.23
 mock==1.0.1
 paramiko==1.15.2
-py==1.4.26
+py==1.10.0
 pycrypto==2.6.1
 pytest==2.6.4
 pytest-cov==1.8.1
