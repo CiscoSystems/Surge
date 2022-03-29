@@ -20,7 +20,7 @@ ecdsa==0.13
 Jinja2==2.7.3
 MarkupSafe==0.23
 mock==1.0.1
-paramiko==1.15.2
+paramiko==2.10.1
 py==1.4.26
 pycrypto==2.6.1
 pytest==2.6.4
